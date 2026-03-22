@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Picker | Art Selection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Chivo+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="exhibition-panel">
+            <header class="panel-header">
+                <div class="brand-mark">PROXY PICKER</div>
+                <div class="progress-indicator">
+                    <span id="progress-text" class="progress-text">-- / --</span>
+                    <div class="progress-track">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="card-context">
+                <h1 id="card-name" class="card-name">Loading...</h1>
+                <div id="card-meta" class="card-meta"></div>
+            </div>
+
+            <footer class="panel-footer">
+                <button id="btn-skip" class="btn-skip" disabled>
+                    <span class="btn-text">Skip Card</span>
+                    <span class="btn-icon">-></span>
+                </button>
+                <div id="status-message" class="status-message"></div>
+            </footer>
+        </aside>
+
+        <main class="gallery-view">
+            <div id="options-grid" class="options-grid">
+            </div>
+        </main>
+
+        <aside id="related-section" class="related-pane" style="display: none;">
+            <header class="related-header">
+                <div class="related-title-group">
+                    <h2 class="section-title">Related Cards</h2>
+                    <span class="section-subtitle">— Optional add-ons</span>
+                </div>
+                <div id="related-count" class="related-count">0 selected</div>
+            </header>
+            <div id="related-grid" class="related-grid">
+            </div>
+        </aside>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
