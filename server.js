@@ -31,7 +31,7 @@ const STATIC_MIME_TYPES = {
   '.txt': 'text/plain; charset=utf-8',
 };
 
-const MULTI_FACE_LAYOUTS = new Set([
+const FACE_LAYOUTS = new Set([
   'adventure',
   'art_series',
   'double_faced_token',
@@ -226,7 +226,6 @@ function buildStatePayload() {
   const matchingCardIndexes = findMatchingCardIndexes(queueEntry);
   const options = buildCardOptions(queueEntry, matchingCardIndexes);
   const relatedOptions = buildRelatedOptions(queueEntry, matchingCardIndexes);
-  const hasNameSlash = queueEntry.name.includes('//');
 
   return {
     progress: {
@@ -237,7 +236,7 @@ function buildStatePayload() {
     currentCard: {
       index: queueEntry.index,
       name: queueEntry.name,
-      isDoubleSided: hasNameSlash || options.some((option) => option.isDoubleSided),
+      isDoubleSided: options.some((option) => option.isDoubleSided),
       previewWarning: buildWarningMessage(),
       options,
       relatedOptions,
@@ -414,15 +413,12 @@ function buildOptionFromCard(queueEntry, card) {
   }
 
   const faceDownloads = extractFaceDownloads(card);
-  const hasNameSlash = queueEntry.name.includes('//') || (card.name || '').includes('//');
-  const isDoubleSided =
-    hasNameSlash ||
-    MULTI_FACE_LAYOUTS.has(card.layout) ||
-    faceDownloads.length > 1;
 
   if (faceDownloads.length === 0) {
     return null;
   }
+
+  const isDoubleSided = isPhysicallyDoubleSided(card, faceDownloads);
 
   const artists = Array.from(
     new Set(faceDownloads.map((face) => face.artist).filter(Boolean))
@@ -452,8 +448,9 @@ function buildOptionFromCard(queueEntry, card) {
 function extractFaceDownloads(card) {
   const downloads = [];
   const shouldPreferFaceImages =
-    MULTI_FACE_LAYOUTS.has(card.layout) &&
+    FACE_LAYOUTS.has(card.layout) &&
     Array.isArray(card.card_faces) &&
+    !card.image_uris &&
     card.card_faces.some((face) => face.image_uris);
 
   if (shouldPreferFaceImages) {
@@ -511,6 +508,19 @@ function extractCardFaceDownloads(card) {
   });
 
   return downloads;
+}
+
+function isPhysicallyDoubleSided(card, faceDownloads) {
+  if (card.image_uris) {
+    return false;
+  }
+
+  return (
+    faceDownloads.length > 1 &&
+    FACE_LAYOUTS.has(card.layout) &&
+    Array.isArray(card.card_faces) &&
+    card.card_faces.filter((face) => face.image_uris).length > 1
+  );
 }
 
 function choosePreviewUrl(imageUris) {
