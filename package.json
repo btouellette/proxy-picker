@@ -1,0 +1,9 @@
+{
+  "name": "proxy-picker",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Local Scryfall artwork picker for a card list",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

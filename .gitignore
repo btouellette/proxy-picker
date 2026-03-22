@@ -1,0 +1,21 @@
+downloads/
+downloads-postprocess/
+data/card-cache.json
+data/progress.json
+
+# Local Scryfall bulk data
+default-cards-*.json
+unique-artwork-*.json
+
+# Runtime noise
+node_modules/
+npm-debug.log*
+*.log
+
+# Local environment noise
+.DS_Store
+.env
+.env.*
+.venv/
+__pycache__/
+models/*.onnx
